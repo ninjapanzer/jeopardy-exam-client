@@ -1,5 +1,6 @@
 .Game {
 	margin:0px;padding:0px;
+	padding-top:3em;
 	width:60%;
 	margin:auto;
 	border:1px solid #ffffff;
@@ -43,6 +44,13 @@
 	border-bottom-left-radius:0px;
 		
 
+}
+
+header{
+	margin:auto;
+	padding:1em;
+	background-color:yellow;
+	text-align:center;
 }
 
 .Game td{

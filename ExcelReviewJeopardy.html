@@ -15,7 +15,7 @@
 		var theData = {
 			"one": {
 				"cell": "what is a cell?",
-				"formatting": "what is formatting",
+				"formatting": "what is formattingwhat is formattingwhat is formattingwhat is formattingwhat is formattingwhat is formatting",
 				"formulas": "what is formulas",
 				"charts": "what is charts",
 				"misc": "what is misc"
@@ -38,6 +38,7 @@
 						var current = $(this);
 						var message = current.attr('class')[0].toUpperCase() + current.attr('class').substr(1)+ " for " + $(this).html();
 						var bodyCopy = theData[_parent.attr('class')][current.attr('class')]
+						var bodyCopy = "<div style='text-align: center;font-size: 2.5em;padding: 1em;line-height: 1.5em;'>"+bodyCopy+"</div>"
 						$.prompt(bodyCopy, {
 						title: message});
 					});
@@ -47,6 +48,9 @@
 	</script>
 </head>
 <body>
+	<header>
+		<h1>Jeopardy Exam Helper</h1>
+	</header>
 	<div id = "Excel Exam Review Jeopardy">
 		<div class="Game" >
 	    <table>
