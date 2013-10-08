@@ -17,7 +17,10 @@
 				var _parent = $(this);
 				$(this).find("td").each(function(){
 					$(this).on("click", function(){
-						$.prompt($(this).attr('class') + " " + _parent.attr("class"));
+						var current = $(this);
+						var message = current.attr('class')[0].toUpperCase() + current.attr('class').substr(1)+ " for " + $(this).html();
+						$.prompt(message, {
+						title: message});
 					});
 				});
 			});
