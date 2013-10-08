@@ -2,61 +2,79 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<title>Excel Exam Jeopardy</title>
-<meta name="description" content="CPT150" />
-<meta name="revised" content="Oct. 7, 2013"
-<meta name="author" content="Savannah Butler" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<link href="excelreview.css" rel=stylesheet>
+	<title>Excel Exam Jeopardy</title>
+	<meta name="description" content="CPT150" />
+	<meta name="revised" content="Oct. 7, 2013"
+	<meta name="author" content="Savannah Butler" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link href="excelreview.css" rel=stylesheet>
+	<link href="jquery-impromptu.css" rel=stylesheet>
+	<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="jquery-impromptu.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$("tbody tr").each(function(){
+				var _parent = $(this);
+				$(this).find("td").each(function(){
+					$(this).on("click", function(){
+						$.prompt($(this).attr('class') + " " + _parent.attr("class"));
+					});
+				});
+			});
+		});
+	</script>
 </head>
 <body>
 	<div id = "Excel Exam Review Jeopardy">
 		<div class="Game" >
 	    <table>
-	      <tr>
-	          <td>Cell</td>
-	          <td>Formatting</td>
-	          <td>Formulas</td>
-						<td>Charts</td>
-						<td>Misc.</td>
-	      </tr>
-	      <tr class="one">
-	        <td class="cell">100</td>
-					<td class="formatting">100</td>
-					<td class="formulas">100</td>
-					<td class="charts">100</td>
-					<td class="misc">100</td>
-	      </tr>
-	      <tr class="two">
-	      	<td class="cell">200</td>
-					<td class="formatting">200</td>
-					<td class="formulas">200</td>
-					<td class="charts">200</td>
-					<td class="misc">200</td>
-	      </tr>
-	      <tr class="three">
-					<td class="cell">300</td>
-					<td class="formatting">300</td>
-					<td class="formulas">300</td>
-					<td class="charts">300</td>
-					<td class="misc">300</td>
-	      </tr>
-	      <tr class="four">
-					<td class="cell">400</td>
-					<td class="formatting">400</td>
-					<td class="formulas">400</td>
-					<td class="charts">400</td>
-					<td class="misc">400</td>
-	      </tr>
-				<tr class="five">
-					<td class="cell">500</td>
-					<td class="formatting">500</td>
-					<td lass="formulas">500</td>
-					<td class="charts">500</td>
-					<td class="misc">500</td>
-				</tr>	
+	    	<thead>
+	    		<th>Cell</th>
+          <th>Formatting</th>
+          <th>Formulas</th>
+					<th>Charts</th>
+					<th>Misc.</th>
+	    	</thead>
+	    	<tbody>
+		      <tr class="one">
+		        <td class="cell">100</td>
+						<td class="formatting">100</td>
+						<td class="formulas">100</td>
+						<td class="charts">100</td>
+						<td class="misc">100</td>
+		      </tr>
+		      <tr class="two">
+		      	<td class="cell">200</td>
+						<td class="formatting">200</td>
+						<td class="formulas">200</td>
+						<td class="charts">200</td>
+						<td class="misc">200</td>
+		      </tr>
+		      <tr class="three">
+						<td class="cell">300</td>
+						<td class="formatting">300</td>
+						<td class="formulas">300</td>
+						<td class="charts">300</td>
+						<td class="misc">300</td>
+		      </tr>
+		      <tr class="four">
+						<td class="cell">400</td>
+						<td class="formatting">400</td>
+						<td class="formulas">400</td>
+						<td class="charts">400</td>
+						<td class="misc">400</td>
+		      </tr>
+					<tr class="five">
+						<td class="cell">500</td>
+						<td class="formatting">500</td>
+						<td lass="formulas">500</td>
+						<td class="charts">500</td>
+						<td class="misc">500</td>
+					</tr>	
+				</tbody>
 	    </table>
 		</div>
 	</div>
+	<div class="leanModal"></div>
 </body>
 </html>
