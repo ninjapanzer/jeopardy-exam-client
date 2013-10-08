@@ -12,6 +12,24 @@
 	<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
 	<script type="text/javascript" src="jquery-impromptu.js"></script>
 	<script type="text/javascript">
+		var theData = {
+			"one": {
+				"cell": "what is a cell?",
+				"formatting": "what is formatting",
+				"formulas": "what is formulas",
+				"charts": "what is charts",
+				"misc": "what is misc"
+			},
+			"two":{
+				"cell": "what is a cell?",
+				"formatting": "what is formatting",
+				"formulas": "what is formulas",
+				"charts": "what is charts",
+				"misc": "what is misc"
+			}
+		}
+	</script>
+	<script type="text/javascript">
 		$(function(){
 			$("tbody tr").each(function(){
 				var _parent = $(this);
@@ -19,7 +37,8 @@
 					$(this).on("click", function(){
 						var current = $(this);
 						var message = current.attr('class')[0].toUpperCase() + current.attr('class').substr(1)+ " for " + $(this).html();
-						$.prompt(message, {
+						var bodyCopy = theData[_parent.attr('class')][current.attr('class')]
+						$.prompt(bodyCopy, {
 						title: message});
 					});
 				});
