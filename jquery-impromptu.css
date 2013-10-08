@@ -13,7 +13,8 @@ div.jqi{
 	position: absolute; 
 	background-color: #ffffff; 
 	font-size: 11px; 
-	text-align: left; 
+	text-align: left;
+	width:50%;
 	border: solid 1px #eeeeee;
 	border-radius: 6px;
 	-moz-border-radius: 6px;
