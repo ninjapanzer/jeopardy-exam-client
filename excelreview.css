@@ -67,6 +67,7 @@ header{
 	font-family:Arial;
 	font-weight:normal;
 	color:#000000;
+	cursor: pointer;
 }.Game tr:last-child td{
 	border-width:0px 1px 0px 0px;
 }.Game tr td:last-child{
