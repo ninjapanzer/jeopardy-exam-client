@@ -99,6 +99,7 @@ header{
 
 .Game tr td.answered{
 	background:#3A91D4;
+	color: #3A91D4;
 }
 
 .Game tr:first-child td:first-child{

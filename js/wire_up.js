@@ -20,7 +20,8 @@ var Jeopardy = function(_config, _answers){
   };
 
   this.setupTitle = function(){
-    jQuery("title").text = config.title;
+    jQuery("header h1").text(config.title);
+    jQuery("title").text(config.title);
   };
 
   this.setupColumns = function(){
