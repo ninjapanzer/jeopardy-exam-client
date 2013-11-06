@@ -96,6 +96,11 @@ header{
 
 	background-color:#0057af;
 }
+
+.Game tr td.answered{
+	background:#3A91D4;
+}
+
 .Game tr:first-child td:first-child{
 	border-width:0px 0px 1px 0px;
 }
