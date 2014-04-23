@@ -88,7 +88,7 @@ var Jeopardy = function(_config, _answers){
           var buttons = {title: message, buttons:{}};
           if(!$('.who-answered--reset').hasClass('is-hidden')){
             buttons.submit = function(e,v,m,f){ debugger;$question.toggleClass("answered"); lastMessageId = guid(); closeQuestion($question.getSelector()[0],lastMessageId); return false; };
-            buttons.loaded = function(){console.log('hi');jQuery('.jqibox').unbind('keydown');};
+            buttons.loaded = function(){jQuery('.jqibox').unbind('keydown');};
             buttons.buttons = {Ok:true};
           }
           jQuery.prompt(bodyCopy, buttons);
