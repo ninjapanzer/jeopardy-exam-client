@@ -3,7 +3,7 @@ var submitted = false;
 var client = new Faye.Client('http://murmuring-atoll-6726.herokuapp.com/faye');
 
 jQuery(function(){
-  //playerName = prompt("Your Name");
+  playerName = prompt("Your Name");
 });
 
 function publishStatus(mode){
@@ -20,11 +20,12 @@ function checkResetStatus(status){
   }
 }
 
-function checkAnsweredStatus(status){
+function checkAnsweredStatus(status, name){
   if(status === 'answered'){
     submitted = true;
     $('.Game td').each(function(){
       $(this).addClass('remote-answer');
+      $('.who-answered--name').html(name);
       $('.who-answered').removeClass('is-hidden');
     });
   }
@@ -32,7 +33,7 @@ function checkAnsweredStatus(status){
 
 var subscription = client.subscribe('/submission', function(status) {
   checkResetStatus(status.mode);
-  checkAnsweredStatus(status.mode);
+  checkAnsweredStatus(status.mode, status.name);
 });
 
 $(function(){
