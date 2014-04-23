@@ -97,6 +97,10 @@ header{
 	background-color:#0057af;
 }
 
+.Game td.remote-answer{
+	background-color: #ffaaaa;
+}
+
 .Game tr td.answered{
 	background:#3A91D4;
 	color: #3A91D4;
