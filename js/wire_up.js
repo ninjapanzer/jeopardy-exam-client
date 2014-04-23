@@ -11,6 +11,7 @@ var Jeopardy = function(_config, _answers){
   var lastMessageId = '';
   var trigger = true;
   var questionSub;
+  var questionClose;
 
   var init = function(){
     config = _config;
@@ -27,11 +28,11 @@ var Jeopardy = function(_config, _answers){
       trigger = true;
     });
     questionClose = client.subscribe('/questionClose', function(resp) {
-      trigger = false;
-      if(lastMessageId !== resp.id){
-        jQuery(resp.element).click();
+      var respElement = jQuery(resp.element.replace('.answered',''));
+      if(!respElement.hasClass('answered')){
+        respElement.addClass("answered");
       }
-      trigger = true;
+      jQuery.prompt.close();
     });
   };
 
@@ -39,8 +40,8 @@ var Jeopardy = function(_config, _answers){
     client.publish('/questionOpen', {element: elem, id: id});
   };
 
-  var closeQuestion = function(){
-    client.publish('/questionClose',{});
+  var closeQuestion = function(elem){
+    client.publish('/questionClose',{element: elem});
   }
 
   this.setupExampleFile = function(){
@@ -76,13 +77,13 @@ var Jeopardy = function(_config, _answers){
             publishQuestion(current.getSelector()[0], lastMessageId);
           }
           if(current.hasClass('remote-answer')){
-            jQuery.prompt("<div class='prompt'>Reset before answering a new question</div>", {title: message, submit:function(e,v,m,f){closeQuestion();}});
+            jQuery.prompt("<div class='prompt'>Reset before answering a new question</div>", {title: message, submit:function(e,v,m,f){return;}});
             return;
           }
           var message = header + " for " + jQuery(this).html();
           var bodyCopy = theData[_parent.attr('class')][current.attr('class')];
           var bodyCopy = "<div class='prompt'>"+bodyCopy+"</div>";
-          jQuery.prompt(bodyCopy, {title: message, submit:function(e,v,m,f){ $question.toggleClass("answered") }});
+          jQuery.prompt(bodyCopy, {title: message, submit:function(e,v,m,f){ $question.toggleClass("answered"); closeQuestion($question.getSelector()[0]); }});
         });
         index++;
       });
