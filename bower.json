@@ -1,0 +1,19 @@
+{
+  "name": "jeopardy-exam-client",
+  "version": "0.0.1",
+  "homepage": "",
+  "authors": [
+    "Paul Scarrone"
+  ],
+  "license": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "faye": "faye#v1.0.0"
+  }
+}
