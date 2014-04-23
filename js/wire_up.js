@@ -28,9 +28,11 @@ var Jeopardy = function(_config, _answers){
       trigger = true;
     });
     questionClose = client.subscribe('/questionClose', function(resp) {
-      var respElement = jQuery(resp.element.replace('.answered',''));
-      if(!respElement.hasClass('answered')){
-        respElement.addClass("answered");
+      if(resp.element !== undefined){
+        var respElement = jQuery(resp.element.replace('.answered',''));
+        if(!respElement.hasClass('answered')){
+          respElement.addClass("answered");
+        }
       }
       jQuery.prompt.close();
     });
@@ -72,12 +74,12 @@ var Jeopardy = function(_config, _answers){
         var $question = jQuery(this);
         jQuery(this).on("click", function(){
           var current = jQuery(this);
-          if(trigger){
+          if(trigger && !current.hasClass('remote-answer')){
             lastMessageId = guid();
             publishQuestion(current.getSelector()[0], lastMessageId);
           }
           if(current.hasClass('remote-answer')){
-            jQuery.prompt("<div class='prompt'>Reset before answering a new question</div>", {title: message, submit:function(e,v,m,f){return false;}});
+            jQuery.prompt("<div class='prompt'>Reset before answering a new question</div>", {title: message, submit:function(e,v,m,f){closeQuestion();return false;}});
             return;
           }
           var message = header + " for " + jQuery(this).html();
