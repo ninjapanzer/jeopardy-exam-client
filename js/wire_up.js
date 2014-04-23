@@ -34,9 +34,13 @@ var Jeopardy = function(_config, _answers){
         var $question = jQuery(this);
         jQuery(this).on("click", function(){
           var current = jQuery(this);
+          if(current.hasClass('remote-answer')){
+            jQuery.prompt("<div class='prompt'>Reset before answering a new question</div>", {title: message, submit:function(e,v,m,f){return;}});
+            return;
+          }
           var message = header + " for " + jQuery(this).html();
           var bodyCopy = theData[_parent.attr('class')][current.attr('class')];
-          var bodyCopy = "<div style='text-align: center;font-size: 2.5em;padding: 1em;line-height: 1.5em;'>"+bodyCopy+"</div>";
+          var bodyCopy = "<div class='prompt'>"+bodyCopy+"</div>";
           jQuery.prompt(bodyCopy, {title: message, submit:function(e,v,m,f){ $question.toggleClass("answered") }});
         });
         index++;

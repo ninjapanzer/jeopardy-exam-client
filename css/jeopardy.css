@@ -1,3 +1,41 @@
+.prompt {
+	text-align: center;
+	font-size: 2.5em;
+	padding: 1em;
+	line-height: 1.5em;
+}
+
+.is-hidden{
+	display:none;
+}
+
+.who-answered{
+	position: fixed;
+	top: 0px;
+	height: 120px;
+	width: 100%;
+	background-color: #ffaaaa;
+}
+
+.who-answered--name{
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+	text-align: center;
+	font-size: 2.5em;
+	padding: 1em;
+	line-height: 1.5em;
+}
+
+.who-answered--reset{
+	position: absolute;
+	height: 34px;
+	width: 75px;
+	top: 38px;
+	right: 24px;
+	font-size: 1em;
+}
+
 .Game {
 	margin:0px;padding:0px;
 	padding-top:1.5em;
