@@ -77,13 +77,19 @@ var Jeopardy = function(_config, _answers){
             publishQuestion(current.getSelector()[0], lastMessageId);
           }
           if(current.hasClass('remote-answer')){
-            jQuery.prompt("<div class='prompt'>Reset before answering a new question</div>", {title: message, submit:function(e,v,m,f){return;}});
+            jQuery.prompt("<div class='prompt'>Reset before answering a new question</div>", {title: message, submit:function(e,v,m,f){return false;}});
             return;
           }
           var message = header + " for " + jQuery(this).html();
           var bodyCopy = theData[_parent.attr('class')][current.attr('class')];
           var bodyCopy = "<div class='prompt'>"+bodyCopy+"</div>";
-          jQuery.prompt(bodyCopy, {title: message, submit:function(e,v,m,f){ $question.toggleClass("answered"); closeQuestion($question.getSelector()[0]); }});
+          var buttons = {title: message, buttons:{}};
+          if(!$('.who-answered--reset').hasClass('is-hidden')){
+            buttons.submit = function(e,v,m,f){ $question.toggleClass("answered"); closeQuestion($question.getSelector()[0]); return false; };
+            buttons.loaded = function(){console.log('hi');jQuery('.jqibox').unbind('keydown');};
+            buttons.buttons = {Ok:true};
+          }
+          jQuery.prompt(bodyCopy, buttons);
         });
         index++;
       });

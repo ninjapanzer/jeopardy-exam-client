@@ -1,9 +1,14 @@
 var playerName = '';
+var mc = false;
 var submitted = false;
 var client = new Faye.Client('http://murmuring-atoll-6726.herokuapp.com/faye');
 
 jQuery(function(){
   playerName = prompt("Your Name");
+  if(playerName === 'mc'){
+    mc = true;
+    $('.who-answered--reset').removeClass('is-hidden');
+  }
 });
 
 function publishStatus(mode){
