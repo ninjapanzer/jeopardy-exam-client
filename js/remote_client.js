@@ -37,15 +37,13 @@ var subscription = client.subscribe('/submission', function(status) {
 });
 
 $(function(){
-  $(document).on('keypress', function(evt){
-    event.preventDefault();
+  $(document).on('keypress', function(event){
     if ( event.which == 32 && submitted === false ) {
       publishStatus('answered');
       submitted = true;
     }
   });
   $('.who-answered--reset').on('click', function(){
-    event.preventDefault();
     publishStatus('reset');
     $('.who-answered').addClass('is-hidden');
 

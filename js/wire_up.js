@@ -6,6 +6,12 @@ var Jeopardy = function(_config, _answers){
 
   var config, answers;
 
+  var client = new Faye.Client('http://murmuring-atoll-6726.herokuapp.com/faye');
+
+  var lastMessageId = '';
+  var trigger = true;
+  var questionSub;
+
   var init = function(){
     config = _config;
     answers = _answers;
@@ -13,7 +19,29 @@ var Jeopardy = function(_config, _answers){
     this.setupHeadings();
     this.setupColumns();
     this.setupExampleFile();
+    questionSub = client.subscribe('/questionOpen', function(resp) {
+      trigger = false;
+      if(lastMessageId !== resp.id){
+        jQuery(resp.element).click();
+      }
+      trigger = true;
+    });
+    questionClose = client.subscribe('/questionClose', function(resp) {
+      trigger = false;
+      if(lastMessageId !== resp.id){
+        jQuery(resp.element).click();
+      }
+      trigger = true;
+    });
   };
+
+  var publishQuestion = function(elem, id){
+    client.publish('/questionOpen', {element: elem, id: id});
+  };
+
+  var closeQuestion = function(){
+    client.publish('/questionClose',{});
+  }
 
   this.setupExampleFile = function(){
     jQuery("#example_file a").attr('href', config.example_file.file).text(config.example_file.text);
@@ -24,18 +52,31 @@ var Jeopardy = function(_config, _answers){
     jQuery("title").text(config.title);
   };
 
+  var guid = function() {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+                 .toString(16)
+                 .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+           s4() + '-' + s4() + s4() + s4();
+  };
+
   this.setupColumns = function(){
     jQuery("tbody tr").each(function(){
       var _parent = jQuery(this);
       var index = 1;
       jQuery(this).find("td").each(function(){
-        console.log("th:nth-child("+index+")");
         var header = jQuery("th:nth-child("+index+")").text();
         var $question = jQuery(this);
         jQuery(this).on("click", function(){
           var current = jQuery(this);
+          if(trigger){
+            lastMessageId = guid();
+            publishQuestion(current.getSelector()[0], lastMessageId);
+          }
           if(current.hasClass('remote-answer')){
-            jQuery.prompt("<div class='prompt'>Reset before answering a new question</div>", {title: message, submit:function(e,v,m,f){return;}});
+            jQuery.prompt("<div class='prompt'>Reset before answering a new question</div>", {title: message, submit:function(e,v,m,f){closeQuestion();}});
             return;
           }
           var message = header + " for " + jQuery(this).html();
