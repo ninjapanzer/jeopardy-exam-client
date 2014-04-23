@@ -30,8 +30,8 @@ var Jeopardy = function(_config, _answers){
     questionClose = client.subscribe('/questionClose', function(resp) {
       if(resp.element !== undefined){
         var respElement = jQuery(resp.element.replace('.answered',''));
-        if(!respElement.hasClass('answered')){
-          respElement.addClass("answered");
+        if(lastMessageId !== resp.id){
+          respElement.toggleClass("answered");
         }
       }
       jQuery.prompt.close();
@@ -42,9 +42,9 @@ var Jeopardy = function(_config, _answers){
     client.publish('/questionOpen', {element: elem, id: id});
   };
 
-  var closeQuestion = function(elem){
-    client.publish('/questionClose',{element: elem});
-  }
+  var closeQuestion = function(elem, id){
+    client.publish('/questionClose',{element: elem, id: id || 0});
+  };
 
   this.setupExampleFile = function(){
     jQuery("#example_file a").attr('href', config.example_file.file).text(config.example_file.text);
@@ -87,7 +87,7 @@ var Jeopardy = function(_config, _answers){
           var bodyCopy = "<div class='prompt'>"+bodyCopy+"</div>";
           var buttons = {title: message, buttons:{}};
           if(!$('.who-answered--reset').hasClass('is-hidden')){
-            buttons.submit = function(e,v,m,f){ $question.toggleClass("answered"); closeQuestion($question.getSelector()[0]); return false; };
+            buttons.submit = function(e,v,m,f){ debugger;$question.toggleClass("answered"); lastMessageId = guid(); closeQuestion($question.getSelector()[0],lastMessageId); return false; };
             buttons.loaded = function(){console.log('hi');jQuery('.jqibox').unbind('keydown');};
             buttons.buttons = {Ok:true};
           }
