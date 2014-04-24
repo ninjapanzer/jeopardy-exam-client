@@ -1,56 +1,88 @@
-var playerName = '';
-var mc = false;
-var submitted = false;
-var client = new Faye.Client('http://murmuring-atoll-6726.herokuapp.com/faye');
+var RemoteClient = function(){
+
+  var init = function(){
+    this.client = new Faye.Client('http://murmuring-atoll-6726.herokuapp.com/faye');
+
+    this.client.on('transport:down', function() {
+      online= false;
+    });
+
+    this.client.on('transport:up', function() {
+      online= true;
+    });
+  };
+
+  init.call(this);
+};
+
+var Player = function(){
+
+  var client;
+  var subscription;
+  var _this;
+  this.playerName = '';
+  this.mc = false;
+  this.submitted = false;
+  this.online = false;
+
+  var init = function(){
+    _this = this;
+    client = new RemoteClient().client;
+    subscription = client.subscribe('/submission', function(status) {
+      _this.checkResetStatus(status.mode);
+      _this.checkAnsweredStatus(status.mode, status.name);
+    });
+
+    playerName = prompt("Your Name");
+    if(playerName === 'mc'){
+      mc = true;
+      jQuery('.who-answered--reset').removeClass('is-hidden');
+    }
+  };
+
+  this.publishStatus = function(mode){
+    client.publish('/submission', {mode: mode, name: playerName});
+  };
+
+  this.checkResetStatus = function(status){
+    if(status === 'reset'){
+      submitted = false;
+      jQuery('.Game td').each(function(){
+        jQuery(this).removeClass('remote-answer');
+        jQuery('.who-answered').addClass('is-hidden');
+      });
+    }
+  };
+
+  this.checkAnsweredStatus = function(status, name) {
+    if(status === 'answered'){
+      submitted = true;
+      jQuery('.Game td').each(function(){
+        jQuery(this).addClass('remote-answer');
+        jQuery('.who-answered--name').html(name);
+        jQuery('.who-answered').removeClass('is-hidden');
+      });
+    }
+  };
+
+  init.call(this);
+};
+
+var player;
 
 jQuery(function(){
-  playerName = prompt("Your Name");
-  if(playerName === 'mc'){
-    mc = true;
-    $('.who-answered--reset').removeClass('is-hidden');
-  }
+  player = new Player();
 });
 
-function publishStatus(mode){
-  client.publish('/submission', {mode: mode, name: playerName});
-}
-
-function checkResetStatus(status){
-  if(status === 'reset'){
-    submitted = false;
-    $('.Game td').each(function(){
-      $(this).removeClass('remote-answer');
-      $('.who-answered').addClass('is-hidden');
-    });
-  }
-}
-
-function checkAnsweredStatus(status, name){
-  if(status === 'answered'){
-    submitted = true;
-    $('.Game td').each(function(){
-      $(this).addClass('remote-answer');
-      $('.who-answered--name').html(name);
-      $('.who-answered').removeClass('is-hidden');
-    });
-  }
-}
-
-var subscription = client.subscribe('/submission', function(status) {
-  checkResetStatus(status.mode);
-  checkAnsweredStatus(status.mode, status.name);
-});
-
-$(function(){
-  $(document).on('keypress', function(event){
-    if ( event.which == 32 && submitted === false ) {
-      publishStatus('answered');
+jQuery(function(){
+  jQuery(document).on('keypress', function(event){
+    if ( event.which == 32 && player.submitted === false ) {
+      player.publishStatus('answered');
       submitted = true;
     }
   });
-  $('.who-answered--reset').on('click', function(){
-    publishStatus('reset');
-    $('.who-answered').addClass('is-hidden');
-
+  jQuery('.who-answered--reset').on('click', function(){
+    player.publishStatus('reset');
+    jQuery('.who-answered').addClass('is-hidden');
   });
 });

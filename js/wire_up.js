@@ -87,7 +87,7 @@ var Jeopardy = function(_config, _answers){
           var bodyCopy = "<div class='prompt'>"+bodyCopy+"</div>";
           var buttons = {title: message, buttons:{}};
           if(!$('.who-answered--reset').hasClass('is-hidden')){
-            buttons.submit = function(e,v,m,f){ debugger;$question.toggleClass("answered"); lastMessageId = guid(); closeQuestion($question.getSelector()[0],lastMessageId); return false; };
+            buttons.submit = function(e,v,m,f){ $question.toggleClass("answered"); lastMessageId = guid(); closeQuestion($question.getSelector()[0],lastMessageId); return false; };
             buttons.loaded = function(){jQuery('.jqibox').unbind('keydown');};
             buttons.buttons = {Ok:true};
           }
