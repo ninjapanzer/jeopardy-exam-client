@@ -67,18 +67,18 @@ var Player = function(_game){
       _this.checkAnsweredStatus(status.mode, status.name);
     });
 
-    setTimeout(function(){
+    setTimeout(function(_this){
       publishJoin();
       if(!online){
         jQuery.prompt("Not Online Please Reload");
       }
-      this.playerName = prompt("Your Name");
-      if(this.playerName === 'mc'){
-        this.mc = true;
+      _this.playerName = prompt("Your Name");
+      if(_this.playerName === 'mc'){
+        _this.mc = true;
         jQuery('.who-answered--reset').removeClass('is-hidden');
         join = subscribeJoin();
       }
-    }, 1000);
+    }, 1000, _this);
   };
 
   var publishJoin = function(){
