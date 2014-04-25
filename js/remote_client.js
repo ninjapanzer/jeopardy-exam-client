@@ -73,13 +73,12 @@ var Player = function(_game){
         jQuery.prompt("Not Online Please Reload");
       }
       this.playerName = prompt("Your Name");
+      if(this.playerName === 'mc'){
+        this.mc = true;
+        jQuery('.who-answered--reset').removeClass('is-hidden');
+        join = subscribeJoin();
+      }
     }, 1000);
-
-    if(this.playerName === 'mc'){
-      this.mc = true;
-      jQuery('.who-answered--reset').removeClass('is-hidden');
-      join = subscribeJoin();
-    }
   };
 
   var publishJoin = function(){
