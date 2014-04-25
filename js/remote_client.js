@@ -4,10 +4,12 @@ var RemoteClient = function(){
     this.client = new Faye.Client('http://murmuring-atoll-6726.herokuapp.com/faye');
 
     this.client.on('transport:down', function() {
+      $(document).trigger( "faye:off" );
       online= false;
     });
 
     this.client.on('transport:up', function() {
+      $(document).trigger( "faye:on" );
       online= true;
     });
   };
@@ -20,33 +22,42 @@ var Player = function(){
   var client;
   var subscription;
   var _this;
+  var online = false;
   this.playerName = '';
   this.mc = false;
   this.submitted = false;
-  this.online = false;
 
   var init = function(){
     _this = this;
+    jQuery(document).on( "faye:on", function(event) {
+      online= true;
+    });
     client = new RemoteClient().client;
     subscription = client.subscribe('/submission', function(status) {
       _this.checkResetStatus(status.mode);
       _this.checkAnsweredStatus(status.mode, status.name);
     });
 
-    playerName = prompt("Your Name");
-    if(playerName === 'mc'){
+    setTimeout(function(){
+      if(!online){
+        jQuery.prompt("Not Online Please Reload");
+      }
+    }, 1000);
+
+    this.playerName = prompt("Your Name");
+    if(this.playerName === 'mc'){
       mc = true;
       jQuery('.who-answered--reset').removeClass('is-hidden');
     }
   };
 
   this.publishStatus = function(mode){
-    client.publish('/submission', {mode: mode, name: playerName});
+    client.publish('/submission', {mode: mode, name: this.playerName});
   };
 
   this.checkResetStatus = function(status){
     if(status === 'reset'){
-      submitted = false;
+      this.submitted = false;
       jQuery('.Game td').each(function(){
         jQuery(this).removeClass('remote-answer');
         jQuery('.who-answered').addClass('is-hidden');
@@ -56,7 +67,7 @@ var Player = function(){
 
   this.checkAnsweredStatus = function(status, name) {
     if(status === 'answered'){
-      submitted = true;
+      this.submitted = true;
       jQuery('.Game td').each(function(){
         jQuery(this).addClass('remote-answer');
         jQuery('.who-answered--name').html(name);
@@ -71,6 +82,9 @@ var Player = function(){
 var player;
 
 jQuery(function(){
+  $(document).on( "faye:off", function(event) {
+    alert("faye offline");
+  });
   player = new Player();
 });
 
