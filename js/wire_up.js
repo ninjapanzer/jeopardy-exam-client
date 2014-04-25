@@ -23,7 +23,10 @@ var Jeopardy = function(_config, _answers){
       trigger = false;
       whoPicked = resp.playerName;
       if(lastMessageId !== resp.id){
-        jQuery(resp.element).click();
+        $elem = jQuery(resp.element);
+        console.log($elem);
+        console.log(resp.element);
+        $elem.click();
       }
       trigger = true;
       whoPicked = '';
