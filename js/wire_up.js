@@ -118,7 +118,7 @@ var Jeopardy = function(_config, _answers){
   };
 
   var setupHeadings = function(){
-    columns = config.columns;
+    var columns = config.columns;
     for (var i in columns){
       var childIndex = parseInt(i) + 1;
       jQuery("th:nth-child("+childIndex+")").text(columns[i]);
