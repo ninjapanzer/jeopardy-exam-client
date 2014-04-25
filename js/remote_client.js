@@ -72,9 +72,9 @@ var Player = function(_game){
       if(!online){
         jQuery.prompt("Not Online Please Reload");
       }
+      this.playerName = prompt("Your Name");
     }, 1000);
 
-    this.playerName = prompt("Your Name");
     if(this.playerName === 'mc'){
       this.mc = true;
       jQuery('.who-answered--reset').removeClass('is-hidden');
