@@ -1,7 +1,3 @@
-jQuery(function(){
-  game = new Jeopardy(config, theData);
-});
-
 var Jeopardy = function(_config, _answers){
 
   var config, answers;
@@ -13,13 +9,14 @@ var Jeopardy = function(_config, _answers){
   var trigger = true;
   var questionSub;
   var questionClose;
+  var broadcaseGameData;
 
   var init = function(){
     config = _config;
     answers = _answers;
-    this.setupTitle();
-    this.setupHeadings();
-    this.setupColumns();
+    setupTitle();
+    setupHeadings();
+    setupColumns();
     this.setupExampleFile();
     questionSub = client.subscribe(remoteClient.sessionRequest('questionOpen'), function(resp) {
       trigger = false;
@@ -37,6 +34,17 @@ var Jeopardy = function(_config, _answers){
       }
       jQuery.prompt.close();
     });
+
+    broadcaseGameData = client.subscribe(remoteClient.sessionRequest('broadcastState'), function(resp){
+      if(RemoteClient.clientId === resp.id){
+        answers = JSON.parse(resp.data);
+        rebuildColumns();
+      }
+    });
+  };
+
+  this.broadcastState = function(clientId){
+    client.publish(remoteClient.sessionRequest('broadcastState'), {data: JSON.stringify(answers), id: clientId});
   };
 
   var publishQuestion = function(elem, id){
@@ -51,32 +59,31 @@ var Jeopardy = function(_config, _answers){
     jQuery("#example_file a").attr('href', config.example_file.file).text(config.example_file.text);
   };
 
-  this.setupTitle = function(){
+  var rebuildColumns = function(){
+    jQuery('tbody tr td').off('.game-table');
+    setupColumns();
+  };
+
+  var setupTitle = function(){
     jQuery("header h1").text(config.title);
     jQuery("title").text(config.title);
   };
 
-  var guid = function() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-                 .toString(16)
-                 .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-           s4() + '-' + s4() + s4() + s4();
-  };
-
-  this.setupColumns = function(){
+  var setupColumns = function(){
     jQuery("tbody tr").each(function(){
       var _parent = jQuery(this);
       var index = 1;
       jQuery(this).find("td").each(function(){
         var header = jQuery("th:nth-child("+index+")").text();
         var $question = jQuery(this);
-        jQuery(this).on("click", function(){
+        if(answers[_parent.attr('class')][jQuery(this).attr('class')+"-answered"]){
+          $question.toggleClass("answered");
+        }
+        jQuery(this).on("click.game-table", function(){
           var current = jQuery(this);
+          answers[_parent.attr('class')][current.attr('class')+"-answered"]= true;
           if(trigger && !current.hasClass('remote-answer')){
-            lastMessageId = guid();
+            lastMessageId = RemoteClient.guid();
             publishQuestion(current.getSelector()[0], lastMessageId);
           }
           if(current.hasClass('remote-answer')){
@@ -84,11 +91,11 @@ var Jeopardy = function(_config, _answers){
             return;
           }
           var message = header + " for " + jQuery(this).html();
-          var bodyCopy = theData[_parent.attr('class')][current.attr('class')];
+          var bodyCopy = answers[_parent.attr('class')][current.attr('class')];
           var bodyCopy = "<div class='prompt'>"+bodyCopy+"</div>";
           var buttons = {title: message, buttons:{}};
           if(!$('.who-answered--reset').hasClass('is-hidden')){
-            buttons.submit = function(e,v,m,f){ $question.toggleClass("answered"); lastMessageId = guid(); closeQuestion($question.getSelector()[0],lastMessageId); return false; };
+            buttons.submit = function(e,v,m,f){ $question.toggleClass("answered"); lastMessageId = RemoteClient.guid(); closeQuestion($question.getSelector()[0],lastMessageId); return false; };
             buttons.loaded = function(){jQuery('.jqibox').unbind('keydown');};
             buttons.buttons = {Ok:true};
           }
@@ -99,7 +106,7 @@ var Jeopardy = function(_config, _answers){
     });
   };
 
-  this.setupHeadings = function(){
+  var setupHeadings = function(){
     columns = config.columns;
     for (var i in columns){
       var childIndex = parseInt(i) + 1;
