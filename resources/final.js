@@ -30,7 +30,7 @@ var theData = {
     "one": "A(n) ____ is a row of buttons on the title bar that let you perform common tasks such as saving a file and undoing an action.",
     "two": "To create a numbered list, you use the Numbering button in the ____ group.",
     "three": "Anya needs to call attention to one category in her chart above all others. For this purpose, she should use a(n) ____.",
-    "four": "Martha knows that if she is selecting fields using a condition, she does not need to use the default operator because it is optional. Which of the following is the default operator?",
+    "four": "Martha knows that if she is selecting fields using a condition, she does not need to use the default operator because it is optional. What is the default operator?",
     "five": "How do you know a text box is active? (Hint: It has to do with the border.)"
   },
   "five": {
