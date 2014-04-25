@@ -24,8 +24,6 @@ var Jeopardy = function(_config, _answers){
       whoPicked = resp.playerName;
       if(lastMessageId !== resp.id){
         $elem = jQuery(resp.element);
-        console.log($elem);
-        console.log(resp.element);
         $elem.click();
       }
       trigger = true;
