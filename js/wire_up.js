@@ -6,7 +6,7 @@ var Jeopardy = function(_config, _answers){
 
   var config, answers;
 
-  var client = new Faye.Client('http://murmuring-atoll-6726.herokuapp.com/faye');
+  var client = new RemoteClient().client;
 
   var lastMessageId = '';
   var trigger = true;
