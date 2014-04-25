@@ -17,3 +17,7 @@ div.jqi{
 	-webkit-border-radius: 6px;
 	padding: 7px;
 }
+
+.jqiclose {
+	display:none;
+}

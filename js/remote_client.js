@@ -76,7 +76,7 @@ var Player = function(_game){
 
     this.playerName = prompt("Your Name");
     if(this.playerName === 'mc'){
-      mc = true;
+      this.mc = true;
       jQuery('.who-answered--reset').removeClass('is-hidden');
       join = subscribeJoin();
     }

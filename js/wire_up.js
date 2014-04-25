@@ -4,6 +4,7 @@ var Jeopardy = function(_config, _answers){
 
   var remoteClient = new RemoteClient();
   var client = remoteClient.client;
+  var whoPicked = '';
 
   var lastMessageId = '';
   var trigger = true;
@@ -20,10 +21,12 @@ var Jeopardy = function(_config, _answers){
     this.setupExampleFile();
     questionSub = client.subscribe(remoteClient.sessionRequest('questionOpen'), function(resp) {
       trigger = false;
+      whoPicked = resp.playerName;
       if(lastMessageId !== resp.id){
         jQuery(resp.element).click();
       }
       trigger = true;
+      whoPicked = '';
     });
     questionClose = client.subscribe(remoteClient.sessionRequest('questionClose'), function(resp) {
       if(resp.element !== undefined){
@@ -48,7 +51,11 @@ var Jeopardy = function(_config, _answers){
   };
 
   var publishQuestion = function(elem, id){
-    client.publish(remoteClient.sessionRequest('questionOpen'), {element: elem, id: id});
+    var playerName = '';
+    if(!player.mc){
+      playerName = player.playerName;
+    }
+    client.publish(remoteClient.sessionRequest('questionOpen'), {element: elem, id: id, playerName: playerName});
   };
 
   var closeQuestion = function(elem, id){
@@ -90,7 +97,11 @@ var Jeopardy = function(_config, _answers){
             jQuery.prompt("<div class='prompt'>Reset before answering a new question</div>", {title: message, submit:function(e,v,m,f){closeQuestion();return false;}});
             return;
           }
-          var message = header + " for " + jQuery(this).html();
+          var name = '';
+          if(whoPicked !== ''){
+            name= "<strong>"+whoPicked +"</strong> Picked ";
+          }
+          var message = name + header + " for " + jQuery(this).html();
           var bodyCopy = answers[_parent.attr('class')][current.attr('class')];
           var bodyCopy = "<div class='prompt'>"+bodyCopy+"</div>";
           var buttons = {title: message, buttons:{}};
