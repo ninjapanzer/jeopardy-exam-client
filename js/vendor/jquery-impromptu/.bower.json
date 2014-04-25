@@ -1,0 +1,14 @@
+{
+  "name": "jquery-impromptu",
+  "homepage": "https://github.com/trentrichardson/jQuery-Impromptu",
+  "version": "5.2.3",
+  "_release": "5.2.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "v5.2.3",
+    "commit": "c0d2416965501640bb5fe1c32b7d196d9a55e344"
+  },
+  "_source": "git://github.com/trentrichardson/jQuery-Impromptu.git",
+  "_target": "5.2.3",
+  "_originalSource": "jquery-impromptu"
+}
