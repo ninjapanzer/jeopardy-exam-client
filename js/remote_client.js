@@ -1,5 +1,7 @@
 var RemoteClient = function(){
 
+  var queryObject;
+
   var init = function(){
     this.client = new Faye.Client('http://murmuring-atoll-6726.herokuapp.com/faye');
 
@@ -12,6 +14,16 @@ var RemoteClient = function(){
       $(document).trigger( "faye:on" );
       online= true;
     });
+
+    queryObject = $.deparam.querystring();
+  };
+
+  this.sessionId = function(){
+    return queryObject.session || '';
+  };
+
+  this.sessionRequest = function(channel){
+    return '/'+ [this.sessionId(), channel].filter(Boolean).join('/');
   };
 
   init.call(this);
@@ -20,6 +32,7 @@ var RemoteClient = function(){
 var Player = function(){
 
   var client;
+  var remoteClient;
   var subscription;
   var _this;
   var online = false;
@@ -32,8 +45,9 @@ var Player = function(){
     jQuery(document).on( "faye:on", function(event) {
       online= true;
     });
-    client = new RemoteClient().client;
-    subscription = client.subscribe('/submission', function(status) {
+    remoteClient = new RemoteClient();
+    client = remoteClient.client;
+    subscription = client.subscribe(remoteClient.sessionRequest('submission'), function(status) {
       _this.checkResetStatus(status.mode);
       _this.checkAnsweredStatus(status.mode, status.name);
     });
@@ -52,7 +66,7 @@ var Player = function(){
   };
 
   this.publishStatus = function(mode){
-    client.publish('/submission', {mode: mode, name: this.playerName});
+    client.publish(remoteClient.sessionRequest('submission'), {mode: mode, name: this.playerName});
   };
 
   this.checkResetStatus = function(status){

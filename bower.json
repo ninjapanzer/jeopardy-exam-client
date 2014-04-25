@@ -14,6 +14,9 @@
     "tests"
   ],
   "dependencies": {
-    "faye": "faye#v1.0.0"
+    "faye": "faye#v1.0.0",
+    "jquery": "jquery#1.10.2",
+    "jquery-bbq": "git@github.com:cowboy/jquery-bbq.git#1.2.1",
+    "jquery-impromptu": "jquery-impromptu#5.2.3"
   }
 }

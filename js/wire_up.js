@@ -6,7 +6,8 @@ var Jeopardy = function(_config, _answers){
 
   var config, answers;
 
-  var client = new RemoteClient().client;
+  var remoteClient = new RemoteClient();
+  var client = remoteClient.client;
 
   var lastMessageId = '';
   var trigger = true;
@@ -20,14 +21,14 @@ var Jeopardy = function(_config, _answers){
     this.setupHeadings();
     this.setupColumns();
     this.setupExampleFile();
-    questionSub = client.subscribe('/questionOpen', function(resp) {
+    questionSub = client.subscribe(remoteClient.sessionRequest('questionOpen'), function(resp) {
       trigger = false;
       if(lastMessageId !== resp.id){
         jQuery(resp.element).click();
       }
       trigger = true;
     });
-    questionClose = client.subscribe('/questionClose', function(resp) {
+    questionClose = client.subscribe(remoteClient.sessionRequest('questionClose'), function(resp) {
       if(resp.element !== undefined){
         var respElement = jQuery(resp.element.replace('.answered',''));
         if(lastMessageId !== resp.id){
@@ -39,11 +40,11 @@ var Jeopardy = function(_config, _answers){
   };
 
   var publishQuestion = function(elem, id){
-    client.publish('/questionOpen', {element: elem, id: id});
+    client.publish(remoteClient.sessionRequest('questionOpen'), {element: elem, id: id});
   };
 
   var closeQuestion = function(elem, id){
-    client.publish('/questionClose',{element: elem, id: id || 0});
+    client.publish(remoteClient.sessionRequest('questionClose'),{element: elem, id: id || 0});
   };
 
   this.setupExampleFile = function(){
