@@ -29,19 +29,34 @@ var RemoteClient = function(){
   init.call(this);
 };
 
-var Player = function(){
+RemoteClient.guid = function() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+               .toString(16)
+               .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+         s4() + '-' + s4() + s4() + s4();
+};
+
+RemoteClient.clientId = RemoteClient.guid();
+
+var Player = function(_game){
 
   var client;
   var remoteClient;
   var subscription;
   var _this;
+  var join;
   var online = false;
+  var game;
   this.playerName = '';
   this.mc = false;
   this.submitted = false;
 
   var init = function(){
     _this = this;
+    game = _game;
     jQuery(document).on( "faye:on", function(event) {
       online= true;
     });
@@ -53,6 +68,7 @@ var Player = function(){
     });
 
     setTimeout(function(){
+      publishJoin();
       if(!online){
         jQuery.prompt("Not Online Please Reload");
       }
@@ -60,9 +76,20 @@ var Player = function(){
 
     this.playerName = prompt("Your Name");
     if(this.playerName === 'mc'){
-      mc = true;
+      this.mc = true;
       jQuery('.who-answered--reset').removeClass('is-hidden');
+      join = subscribeJoin();
     }
+  };
+
+  var publishJoin = function(){
+    client.publish(remoteClient.sessionRequest('join'), {name: this.playerName, id: RemoteClient.clientId});
+  };
+
+  var subscribeJoin = function(){
+    return client.subscribe(remoteClient.sessionRequest('join'), function(resp) {
+      game.broadcastState(resp.id);
+    });
   };
 
   this.publishStatus = function(mode){
@@ -94,12 +121,14 @@ var Player = function(){
 };
 
 var player;
+var game;
 
 jQuery(function(){
   $(document).on( "faye:off", function(event) {
     alert("faye offline");
   });
-  player = new Player();
+  game = new Jeopardy(config, theData);
+  player = new Player(game);
 });
 
 jQuery(function(){

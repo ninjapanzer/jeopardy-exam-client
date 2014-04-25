@@ -12,3 +12,7 @@ index.html?session=game_session
 ```
 
 As long as all players have the same url session then they will be in the same game
+
+### Late Joining clients
+
+Clients that join a session late will have their answered state synced with the MC at join
