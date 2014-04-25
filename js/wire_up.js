@@ -54,15 +54,17 @@ var Jeopardy = function(_config, _answers){
   };
 
   var publishQuestion = function(elem, id){
+    var selector = elem.substring(elem.indexOf('DIV.Game'));
     var playerName = '';
     if(!player.mc){
       playerName = player.playerName;
     }
-    client.publish(remoteClient.sessionRequest('questionOpen'), {element: elem, id: id, playerName: playerName});
+    client.publish(remoteClient.sessionRequest('questionOpen'), {element: selector, id: id, playerName: playerName});
   };
 
   var closeQuestion = function(elem, id){
-    client.publish(remoteClient.sessionRequest('questionClose'),{element: elem, id: id || 0});
+    var selector = elem.substring(elem.indexOf('DIV.Game'));
+    client.publish(remoteClient.sessionRequest('questionClose'),{element: selector, id: id || 0});
   };
 
   this.setupExampleFile = function(){
