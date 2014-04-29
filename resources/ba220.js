@@ -5,10 +5,10 @@ var config = {
 };
 
 var theData = {
-  "one": {
+  "one":{
     "one": "Your company wants to increase market share.",
     "two": "<img src = './resources/images/breyers.jpg'/>",
-    "three": "What objective would you use if the market wasn't growing?"
+    "three": "What objective would you use if the market wasn't growing?",
   },
   "two":{
     "one": "Price policies usually lead to _________.",
@@ -16,7 +16,7 @@ var theData = {
     "three": "<img src = './resources/images/forceflex.jpg'/>"
   },
   "three": {
-    "one": "What are some different names for price? (Name at least two.)",
+    "one": "What is the price equation?",
     "two": "What are the three main price objectives?",
     "three": "Name a disadvantage to flexible pricing."
   },
