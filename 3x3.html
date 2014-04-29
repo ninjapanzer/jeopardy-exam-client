@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <title></title>
+  <meta name="description" content="CPT150" />
+  <meta name="revised" content="April 20, 2014"
+  <meta name="author" content="Savannah Butler" />
+  <meta name="author" content="Paul Scarrone" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  
+  <link href="css/jeopardy.css" rel=stylesheet>
+  <link href="js/vendor/jquery-impromptu/dist/jquery-impromptu.css" rel=stylesheet>
+  <link href="css/jquery-impromptu.css" rel=stylesheet>
+  
+  <script type="text/javascript" src="js/vendor/faye/include.min.js"></script>
+  <script type="text/javascript" src="js/vendor/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="js/vendor/jquery/jquery-migrate.min.js"></script>
+  <script type="text/javascript" src="js/vendor/jquery-impromptu/dist/jquery-impromptu.min.js"></script>
+  <script type="text/javascript" src="js/vendor/jquery-bbq/jquery.ba-bbq.min.js"></script>
+  <script type="text/javascript" src="js/jquery-getSelector.js"></script>
+
+  <!-- point this to the file that has the data for your lession -->
+  <script type="text/javascript" src="resources/final.js"></script>
+
+  <script type="text/javascript" src="js/remote_client.js"></script>
+  <script type="text/javascript" src="js/wire_up.js"></script>
+
+</head>
+<body>
+  <header>
+    <h1>Jeopardy Exam Helper</h1>
+  </header>
+  <div class='is-hidden who-answered'>
+    <div class='who-answered--name'></div>
+    <button type='button' class='who-answered--reset is-hidden'>Reset</button>
+  </div>
+  <div>
+    <div class="Game" >
+      <table>
+        <thead>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr class="one">
+            <td class="one">100</td>
+            <td class="two">100</td>
+            <td class="three">100</td>
+          </tr>
+          <tr class="two">
+            <td class="one">200</td>
+            <td class="two">200</td>
+            <td class="three">200</td>
+          </tr>
+          <tr class="three">
+            <td class="one">300</td>
+            <td class="two">300</td>
+            <td class="three">300</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="example_file"><a href=""></a></div>
+</body>
+</html>
