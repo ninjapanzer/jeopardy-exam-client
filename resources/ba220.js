@@ -5,7 +5,7 @@ var config = {
 }
 var theData = {
   "one": {
-    "one": "<img src = 'images/breyers.jpg/>'",
+    "one": "<img src = './resources/images/breyers.jpg'/>",
     "two": "",
     "three": "",
   },
