@@ -6,18 +6,18 @@ var config = {
 
 var theData = {
   "one":{
-    "one": "Your company wants to increase market share.",
-    "two": "<img src = './resources/images/breyers.jpg'/>",
-    "three": "What objective would you use if the market wasn't growing?",
+    "one": "<img src = './resources/images/breyers.jpg'/>",
+    "two": "Price policies usually lead to _________.",
+    "three": "What is the price equation?",
   },
   "two":{
-    "one": "Price policies usually lead to _________.",
+    "one": "Your company wants to increase market share.",
     "two": "<img src = './resources/images/carnival.jpg'/>",
-    "three": "<img src = './resources/images/forceflex.jpg'/>"
+    "three": "What are the three main price objectives?"
   },
   "three": {
-    "one": "What is the price equation?",
-    "two": "What are the three main price objectives?",
+    "one": "What objective would you use if the market wasn't growing?",
+    "two": "<img src = './resources/images/forceflex.jpg'/>",
     "three": "Name a disadvantage to flexible pricing."
   },
 }
